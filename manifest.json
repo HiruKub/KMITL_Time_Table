@@ -1,17 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "Borderify",
+  "name": "KMITL TIME TABLE PLUS",
   "version": "1.0",
 
   "description": "Adds a red border to all webpages matching mozilla.org.",
+  "permissions": ["storage"],
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "/data/img/Icon.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
   },
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "borderify@mozilla.org",
+      "id": "kmitl_time_table@mozilla.org",
       "data_collection_permissions": {
         "required": ["none"]
       }
@@ -20,8 +24,9 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*"],
-      "js": ["borderify.js"]
+      "matches": ["https://regis.reg.kmitl.ac.th/*"],
+      "js": ["script.js"],
+      "run_at": "document_idle"
     }
   ]
 }

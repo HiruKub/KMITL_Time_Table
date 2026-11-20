@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Table KMITL</title>
+    <link rel="stylesheet" href="styles.css" ? />
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="title-section">
+                <h1>ตารางเรียนส่วนบุลคล</h1>
+            </div>
+            <div class="export-btn">
+                <button id="btn-export-jpg">JPG</button>
+                <button id="btn-export-pdf">PDF</button>
+            </div>
+        </header>
+        <div class="timetable-card">
+            <div id="timetable-grid" class="timetable-grid">
+            </div>
+        </div>
+        <div class="courses-manager">
+            <h2>จัดการรายวิชาและสลับ Section</h2>
+            <div id="conflict-alert" class="alert-box" style="display: none;"></div>
+
+            <h3>วิชาในตารางปัจจุบัน</h3>
+            <table id="current-courses-table">
+
+            </table>
+            <h3>วิชาเสริม / สลับ Section อื่น</h3>
+            <div id="available-courses-list">
+
+            </div>
+        </div>
+    </div>
+    <script src="time_table_view.js"></script>
+</body>
+
+</html>

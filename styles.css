@@ -1,0 +1,210 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fcf8f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ffcc80;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Grid ตารางเวลา */
+.timetable-card {
+    background: white;
+    border: 1px solid #ffd8a8;
+    border-radius: 8px;
+    overflow-x: auto;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.grid-header-day,
+.day-label {
+    width: 90px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff3e0;
+    padding: 8px 0;
+    border: 1px solid #ffe0b2;
+}
+
+.day-row {
+    display: flex;
+    height: 70px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.day-slots {
+    position: relative;
+    flex-grow: 1;
+    background: repeating-linear-gradient(to right,
+            transparent,
+            transparent calc(100% / 13 - 1px),
+            #f0f0f0 calc(100% / 13 - 1px),
+            #f0f0f0 calc(100% / 13));
+}
+
+/* การ์ดวิชาที่วางลงในช่อง */
+.course-card {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    border-radius: 4px;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    font-size: 11px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-code {
+    font-weight: bold;
+}
+
+.card-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-room {
+    color: #666;
+    font-size: 10px;
+}
+
+.grid-header-row {
+    display: flex;
+    border-bottom: 2px solid #ffe0b2;
+}
+
+.grid-header-time {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    background: #fff8e1;
+    padding: 8px 0;
+    border-right: 1px solid #ffe0b2;
+}
+
+/* ตารางข้างใน */
+#current-courses-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#current-courses-table th,
+#current-courses-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    font-size: 13px;
+}
+
+#current-courses-table th {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+/* Badge ทฤษฎี / ปฏิบัติ */
+.badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.badge-lec {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-lab {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.btn-remove {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* แผงวิชาเสริมและสลับ Sec */
+.available-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.available-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+}
+
+.available-card.is-active {
+    border-color: #4caf50;
+    background: #f1f8e9;
+}
+
+.avail-header {
+    margin-bottom: 6px;
+}
+
+.avail-body {
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.btn-swap {
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffb74d;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.btn-add {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.tag-active {
+    color: #388e3c;
+    font-weight: bold;
+}
