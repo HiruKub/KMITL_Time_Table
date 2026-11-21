@@ -3,14 +3,14 @@
   "name": "KMITL TIME TABLE PLUS",
   "version": "1.0",
 
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "description": "KMITL TIMETABLE HELPER",
   "permissions": ["storage"],
 
   "icons": {
-    "48": "/data/img/Icon.png"
+    "48": "data/img/Icon.png"
   },
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
 
   "browser_specific_settings": {

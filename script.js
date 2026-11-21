@@ -1,12 +1,13 @@
 console.log("KMITL Time Table Plus Extension loaded");
 
+const ext = typeof browser !== "undefined" ? browser : chrome;
+
 function checkCurrentPage() {
     const hash = window.location.hash;
     console.log("Current Hash:", hash);
 
     if (hash.includes("teach_table")) {
         console.log("at the page now");
-        // document.body.style.border = "5px solid red";
         waitForTable((rows) => {
             const courses = parseTimeTable(rows);
             const organizedData = organizeSections(courses);
@@ -54,16 +55,10 @@ function parseTimeTable(rows) {
         if (schedule_text && schedule_text.includes(" ")) {
             const parts = schedule_text.split(" ")
             day = parts[0];
-            // console.log(parts[1]);
-            // console.log(parts[1].includes('-'));
             if (parts[1] && parts[1].includes("-")) {
-                // console.log("Kuy");
-                // console.log(parts[1]);
                 const times = parts[1].split("-");
                 start_time = times[0];
                 end_time = times[1];
-                // console.log(start_time);
-                // console.log(end_time);
             }
         }
 
@@ -90,11 +85,9 @@ function organizeSections(courses) {
         GenED: []
     }
     courses.forEach((course) => {
-        // var sec = course.section.substr(course.section.length - 1);
-        // var core_course = course.code.substr()
         
-        const sec_digit = course.section.match(/\d+/)?.[0] || "";// RegEx
-        const sec_num = parseInt(sec_digit, 10);
+        const sec_digit = course.section.match(/\d+/)?.[0] || "";// RegEx catch only integer (only get 101 in 101 ปฏิบัติ)
+        const sec_num = parseInt(sec_digit, 10);//convert string to int
 
         const is_gened = course.code.startsWith("90") || sec_num >= 900 || course.code.startsWith("1");
         if (is_gened) {
@@ -132,6 +125,7 @@ function renderControlButtons(organizedData) {
 
     container.innerHTML = html;
 
+    // insert controller bar before the table
     const table = document.querySelector('table');
     table?.parentElement?.insertBefore(container, table);
 
@@ -140,12 +134,12 @@ function renderControlButtons(organizedData) {
         const selected_sec = document.getElementById("kmitl-sec-select").value;
         console.log("selected_sec",selected_sec);
         
-        browser.storage.local.set({
+        ext.storage.local.set({
             time_table_data: organizedData,
             sec : selected_sec
         }).then(()=> {
-            // const url = browser.runtime.getURL("time_table.html");
-            browser.runtime.sendMessage({ action: "open_timetable" });
+            // const url = ext.runtime.getURL("time_table.html");
+            ext.runtime.sendMessage({ action: "open_timetable" });
         });
     });
 }

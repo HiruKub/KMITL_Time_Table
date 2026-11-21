@@ -2,8 +2,9 @@ console.log("Timetable loaded");
 
 let all_data = null;
 let current_courses = [];
+const ext = typeof browser !== "undefined" ? browser : chrome;
 
-browser.storage.local.get(["time_table_data", "sec"]).then((result) => {
+ext.storage.local.get(["time_table_data", "sec"]).then((result) => {
     console.log("ข้อมูลที่ส่งข้ามมา:", result);
     all_data = result.time_table_data;
     const current_sec = result.sec;
@@ -73,35 +74,33 @@ function renderTimetableGrid() {
     const gridContainer = document.getElementById("timetable-grid");
     if (!gridContainer) return;
 
-    // เคลียร์ตารางเดิมก่อนวาดใหม่
+    // clear old table before creating the new one
     gridContainer.innerHTML = "";
 
-    // สร้างหัวตาราง (แถวเวลา)
-    // สร้างหัวตาราง (ครอบด้วย div class grid-header-row)
     let headerHtml = `<div class="grid-header-row">`;
     headerHtml += `<div class="grid-header-day">วัน / เวลา</div>`;
     TIME_SLOTS.forEach(time => {
         headerHtml += `<div class="grid-header-time">${time}</div>`;
     });
-    headerHtml += `</div>`; // ปิด grid-header-row
+    headerHtml += `</div>`;
 
-    // 2. สร้างแถวของแต่ละวัน (อาทิตย์ - เสาร์)
+    // create row of each day
     let bodyHtml = "";
     DAYS.forEach(day => {
         bodyHtml += `<div class="day-row" data-day="${day}">`;
         bodyHtml += `<div class="day-label">${day}</div>`;
         bodyHtml += `<div class="day-slots">`;
 
-        // ค้นหาวิชาที่เรียนในวันนี้
+        //search courses that have for this day
         const daysCourses = current_courses.filter(c => c.day === day);
 
-        // วาดการ์ดของแต่ละวิชาลงบนแถววันนี้
+        //creating card of each course in this day
         daysCourses.forEach(course => {
             const startMin = timeToMinutes(course.start_time);
             const endMin = timeToMinutes(course.end_time);
 
-            // คำนวณตำแหน่งช่อง (เริ่มนับ 08:00 = 480 นาที, ตารางจบ 21:00 = 1260 นาที)
-            // รวมเวลาทั้งหมด 13 ชม. = 780 นาที
+            // calculating the card (start 08:00 = 480 mins, end 21:00 = 1260 mins)
+            // total 13 hr = 780 mins
             const totalMinutes = 13 * 60;
             const leftPercent = ((startMin - 480) / totalMinutes) * 100;
             const widthPercent = ((endMin - startMin) / totalMinutes) * 100;
@@ -117,15 +116,15 @@ function renderTimetableGrid() {
                 `;
         });
 
-        bodyHtml += `</div>`; 
-        bodyHtml += `</div>`; 
+        bodyHtml += `</div>`;
+        bodyHtml += `</div>`;
     });
 
     gridContainer.innerHTML = headerHtml + bodyHtml;
 }
 
 function renderCourseList() {
-    // วาดตารางรายวิชาปัจจุบัน (#current-courses-table)
+    //create current courses (#current-courses-table)
     const currentTable = document.getElementById("current-courses-table");
     if (currentTable) {
         let tableHtml = `
@@ -168,7 +167,7 @@ function renderCourseList() {
         tableHtml += `</tbody>`;
         currentTable.innerHTML = tableHtml;
 
-        //ปุ่มลบวิชาออกจากตาราง
+        //remove course button
         currentTable.querySelectorAll(".btn-remove").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const idx = parseInt(e.target.dataset.index, 10);
@@ -179,12 +178,12 @@ function renderCourseList() {
         });
     }
 
-    
-    //วาดรายการวิชาอื่น ๆ สำหรับสลับ Sec หรือเพิ่ม GenED
+
+    //create other courses for swapping section or adding GenED
     const availableContainer = document.getElementById("available-courses-list");
     if (!availableContainer || !all_data) return;
 
-    // รวบรวมวิชาทั้งหมดที่มีในระบบ (ทั้งทุก Sec และ GenED)
+    //collecting all courses (every sec and GenED)
     let allAvailable = [];
     Object.keys(all_data.sections).forEach(secKey => {
         allAvailable = allAvailable.concat(all_data.sections[secKey]);
@@ -194,11 +193,11 @@ function renderCourseList() {
     let availableHtml = `<div class="available-grid">`;
 
     allAvailable.forEach(course => {
-        // เช็คว่าวิชานี้อยู่ในตารางปัจจุบันแล้วหรือเปล่า
+        // checking if this course had in the current table
         const isInCurrent = current_courses.some(
             c => c.code === course.code && c.section === course.section
         );
-        // เช็คว่ามีวิชานี้แต่เป็น Sec อื่นหรือเปล่า
+        //checking if this course also has other sections
         const isSameCodeOtherSec = current_courses.some(
             c => c.code === course.code && c.section !== course.section
         );
@@ -236,15 +235,14 @@ function renderCourseList() {
     availableHtml += `</div>`;
     availableContainer.innerHTML = availableHtml;
 
-    // ผูก Event ให้ปุ่มสลับ Sec และปุ่มเพิ่มวิชา
+    // add event to swapping btn and adding btn
     availableContainer.querySelectorAll(".btn-swap, .btn-add").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const code = e.target.dataset.code;
             const sec = e.target.dataset.sec;
 
-            // ค้นหาวิชาตัวที่ถูกคลิก
-            const targetCourse = allAvailable.find(c => c.code === code && c.section
-                === sec);
+            //find cliked course
+            const targetCourse = allAvailable.find(c => c.code === code && c.section === sec);
             if (targetCourse) {
                 swapOrAddCourse(targetCourse);
             }

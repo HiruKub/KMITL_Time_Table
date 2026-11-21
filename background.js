@@ -1,8 +1,8 @@
-// background.js
 console.log("Background script running...");
+const ext = typeof browser !== "undefined" ? browser : chrome;
 
 // รอรับข้อความจาก script.js
-browser.runtime.onMessage.addListener((message) => {
+ext.runtime.onMessage.addListener((message) => {
     if (message.action === "open_timetable") {
         // ใช้คำสั่งระดับ Extension ในการเปิดแท็บใหม่
         browser.tabs.create({
