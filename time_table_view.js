@@ -60,7 +60,6 @@ function swapOrAddCourse(new_course) {
     renderCourseList();
 }
 
-// รายชื่อวันเรียงตามลำดับในภาพ
 const DAYS = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์", "อาทิตย์"];
 
 // รายการช่วงเวลาหัวตาราง (13 ชั่วโมง)
@@ -77,8 +76,8 @@ function renderTimetableGrid() {
     // เคลียร์ตารางเดิมก่อนวาดใหม่
     gridContainer.innerHTML = "";
 
-    // 1. สร้างหัวตาราง (แถวเวลา)
-    // 1. สร้างหัวตาราง (ครอบด้วย div class grid-header-row)
+    // สร้างหัวตาราง (แถวเวลา)
+    // สร้างหัวตาราง (ครอบด้วย div class grid-header-row)
     let headerHtml = `<div class="grid-header-row">`;
     headerHtml += `<div class="grid-header-day">วัน / เวลา</div>`;
     TIME_SLOTS.forEach(time => {
@@ -118,17 +117,15 @@ function renderTimetableGrid() {
                 `;
         });
 
-        bodyHtml += `</div>`; // ปิด day-slots
-        bodyHtml += `</div>`; // ปิด day-row
+        bodyHtml += `</div>`; 
+        bodyHtml += `</div>`; 
     });
 
     gridContainer.innerHTML = headerHtml + bodyHtml;
 }
 
 function renderCourseList() {
-    // ==========================================
-    // 1. วาดตารางรายวิชาปัจจุบัน (#current-courses-table)
-    // ==========================================
+    // วาดตารางรายวิชาปัจจุบัน (#current-courses-table)
     const currentTable = document.getElementById("current-courses-table");
     if (currentTable) {
         let tableHtml = `
@@ -171,7 +168,7 @@ function renderCourseList() {
         tableHtml += `</tbody>`;
         currentTable.innerHTML = tableHtml;
 
-        // ผูกปุ่มลบวิชาออกจากตาราง
+        //ปุ่มลบวิชาออกจากตาราง
         currentTable.querySelectorAll(".btn-remove").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const idx = parseInt(e.target.dataset.index, 10);
@@ -182,9 +179,8 @@ function renderCourseList() {
         });
     }
 
-    // =======================================================
-    // 2. วาดรายการวิชาอื่น ๆ สำหรับสลับ Sec หรือเพิ่ม GenED
-    // =======================================================
+    
+    //วาดรายการวิชาอื่น ๆ สำหรับสลับ Sec หรือเพิ่ม GenED
     const availableContainer = document.getElementById("available-courses-list");
     if (!availableContainer || !all_data) return;
 
@@ -198,11 +194,11 @@ function renderCourseList() {
     let availableHtml = `<div class="available-grid">`;
 
     allAvailable.forEach(course => {
-        // เช็คว่าวิชานี้อยู่ในตารางปัจจุบันแล้วหรือไม่
+        // เช็คว่าวิชานี้อยู่ในตารางปัจจุบันแล้วหรือเปล่า
         const isInCurrent = current_courses.some(
             c => c.code === course.code && c.section === course.section
         );
-        // เช็คว่ามีวิชานี้แต่เป็น Sec อื่นหรือไม่
+        // เช็คว่ามีวิชานี้แต่เป็น Sec อื่นหรือเปล่า
         const isSameCodeOtherSec = current_courses.some(
             c => c.code === course.code && c.section !== course.section
         );
