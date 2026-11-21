@@ -10,7 +10,7 @@
     "48": "data/img/Icon.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
 
   "browser_specific_settings": {
