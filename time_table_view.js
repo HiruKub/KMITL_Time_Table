@@ -35,7 +35,7 @@ function isConflict(A, B) {
     const startA = timeToMinutes(A.start_time);
     const endA = timeToMinutes(A.end_time);
     const startB = timeToMinutes(B.start_time);
-    const endB = timeToMinutes(B.start_time);
+    const endB = timeToMinutes(B.end_time);
     return (startA < endB && startB < endA);
 }
 
@@ -43,11 +43,13 @@ function swapOrAddCourse(new_course) {
     const existing_course = current_courses.findIndex(c => c.code === new_course.code);
     const other_course = current_courses.filter((_, idx) => idx !== existing_course);
 
+    console.log(new_course);
     for (const course of other_course) {
         if (isConflict(new_course, course)) {
-            const msg = `เวลาชนกัน วิชา ${newCourse.name} (กลุ่ม ${newCourse.section})เวลา ${newCourse.day} ${newCourse.start_time}-${newCourse.end_time}ชนกับวิชา ${course.name} (${course.day}${course.start_time}-${course.end_time})`;
+            const msg = `เวลาชนกัน วิชา ${new_course.name} (กลุ่ม ${new_course.section})เวลา ${new_course.day} ${new_course.start_time}-${new_course.end_time}ชนกับวิชา ${course.name} (${course.day}${course.start_time}-${course.end_time})`;
             alert(msg);
-            return false
+            console.log("time is conflict");
+            return false;
         }
     }
 
@@ -243,6 +245,7 @@ function renderCourseList() {
 
             //find cliked course
             const targetCourse = allAvailable.find(c => c.code === code && c.section === sec);
+            console.log(targetCourse);
             if (targetCourse) {
                 swapOrAddCourse(targetCourse);
             }
